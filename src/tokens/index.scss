@@ -1,0 +1,21 @@
+@use "spacing" as *;
+
+:root {
+  // Spacing
+  @each $name, $value in $spacing {
+    --ds-spacing-#{$name}: #{$value};
+  }
+
+  // Color
+  --ds-color-surface-high: #f1f1f7;
+  --ds-color-surface-positive: #b1ffc7;
+  --ds-color-surface-negative: #ffbfb1;
+  --ds-color-on-neutral: #1b2134;
+
+  // Typography
+  --ds-font-family: "Inter", system-ui, sans-serif;
+  --ds-font-size-body-m: 14px;
+  --ds-font-size-body-s: 12px;
+  --ds-font-weight-bold: 700;
+  --ds-line-height-body: 1.5;
+}

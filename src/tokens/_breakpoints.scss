@@ -1,0 +1,6 @@
+// Figma: "Mobile: True" when viewport <= 768px
+@mixin mobile {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
