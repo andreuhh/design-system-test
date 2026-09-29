@@ -27,3 +27,8 @@ export const AllVariants: Story = {
     </div>
   ),
 };
+
+export const Mobile: Story = {
+  ...AllVariants,
+  globals: { viewport: { value: "mobile1", isRotated: false } },
+};

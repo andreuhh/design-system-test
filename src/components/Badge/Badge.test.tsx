@@ -21,7 +21,11 @@ describe("Badge", () => {
   });
 
   it("forwards native attributes", () => {
-    render(<Badge data-testid="badge" title="3 warnings">Warning</Badge>);
+    render(
+      <Badge data-testid="badge" title="3 warnings">
+        Warning
+      </Badge>,
+    );
     expect(screen.getByTestId("badge")).toHaveAttribute("title", "3 warnings");
   });
 

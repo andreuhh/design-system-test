@@ -1,10 +1,10 @@
-// jest-dom adds custom jest matchers for asserting on DOM nodes.
-// allows you to do things like:
+// jest-dom adds custom matchers for asserting on DOM nodes, e.g.
 // expect(element).toHaveTextContent(/react/i)
-// learn more: https://github.com/testing-library/jest-dom
+// https://github.com/testing-library/jest-dom
 import "@testing-library/jest-dom/vitest";
 
-import "vitest-axe/extend-expect";
+// vitest-axe ships no auto-registering entry point for Vitest 5: we register the
+// matchers ourselves, and declare their types in src/vitest-axe.d.ts.
 import * as axeMatchers from "vitest-axe/matchers";
 
 expect.extend(axeMatchers);
