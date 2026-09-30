@@ -1,15 +1,26 @@
-import type { Meta, StoryObj } from "@storybook/react-vite";
+import type { Decorator, Meta, StoryObj } from "@storybook/react-vite";
 import { useState } from "react";
 import { Tab } from "./Tab";
 import { TabList } from "./TabList";
 import { TabPanel } from "./TabPanel";
 import { Tabs } from "./Tabs";
 
+// The demo content in the panels would otherwise inherit the default serif font
+// of the browser. Kept in this meta and not in .storybook/preview on purpose: a
+// global decorator would hide a design system component that forgets to declare
+// its own font, the way Tab and Badge already do.
+const withTokenFont: Decorator = (Story) => (
+  <div style={{ fontFamily: "var(--ds-font-family)" }}>
+    <Story />
+  </div>
+);
+
 const meta = {
   title: "Components/Tabs",
   component: Tabs,
   subcomponents: { TabList, Tab, TabPanel },
   // No autodocs tag: Tabs.mdx is the docs page for this component.
+  decorators: [withTokenFont],
   args: { variant: "pill", defaultValue: "emails" },
   argTypes: {
     variant: { control: "inline-radio", options: ["pill", "underline"] },
@@ -141,62 +152,59 @@ const Inbox = () => {
   const [section, setSection] = useState("emails");
 
   return (
-    // The demo content inherits the font of the page; the tabs bring their own.
-    <div style={{ fontFamily: "var(--ds-font-family)" }}>
-      <Tabs value={section} onValueChange={setSection} variant="pill">
-        <TabList aria-label="Inbox sections">
-          <Tab value="emails">Emails</Tab>
-          <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
-            Files
-          </Tab>
-          <Tab value="edits">Edits</Tab>
-          <Tab value="downloads">Downloads</Tab>
-          <Tab value="docs">Docs</Tab>
-        </TabList>
+    <Tabs value={section} onValueChange={setSection} variant="pill">
+      <TabList aria-label="Inbox sections">
+        <Tab value="emails">Emails</Tab>
+        <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+          Files
+        </Tab>
+        <Tab value="edits">Edits</Tab>
+        <Tab value="downloads">Downloads</Tab>
+        <Tab value="docs">Docs</Tab>
+      </TabList>
 
-        <TabPanel value="emails">
-          <ul style={{ ...panelStyle, display: "grid", gap: 8, padding: 0, listStyle: "none" }}>
-            {emails.map((email) => (
-              <li key={email.subject} style={cardStyle}>
-                <strong>{email.from}</strong> — {email.subject}
-              </li>
-            ))}
-          </ul>
-        </TabPanel>
+      <TabPanel value="emails">
+        <ul style={{ ...panelStyle, display: "grid", gap: 8, padding: 0, listStyle: "none" }}>
+          {emails.map((email) => (
+            <li key={email.subject} style={cardStyle}>
+              <strong>{email.from}</strong> — {email.subject}
+            </li>
+          ))}
+        </ul>
+      </TabPanel>
 
-        <TabPanel value="files">
-          <div
-            style={{
-              ...panelStyle,
-              display: "grid",
-              gap: 8,
-              gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-            }}
-          >
-            {files.map((file) => (
-              <div
-                key={file}
-                style={{ ...cardStyle, display: "grid", placeItems: "center", minHeight: 80 }}
-              >
-                {file}
-              </div>
-            ))}
-          </div>
-        </TabPanel>
+      <TabPanel value="files">
+        <div
+          style={{
+            ...panelStyle,
+            display: "grid",
+            gap: 8,
+            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+          }}
+        >
+          {files.map((file) => (
+            <div
+              key={file}
+              style={{ ...cardStyle, display: "grid", placeItems: "center", minHeight: 80 }}
+            >
+              {file}
+            </div>
+          ))}
+        </div>
+      </TabPanel>
 
-        <TabPanel value="edits">
-          <p style={panelStyle}>No pending edits.</p>
-        </TabPanel>
+      <TabPanel value="edits">
+        <p style={panelStyle}>No pending edits.</p>
+      </TabPanel>
 
-        <TabPanel value="downloads">
-          <p style={panelStyle}>Nothing downloaded in the last 30 days.</p>
-        </TabPanel>
+      <TabPanel value="downloads">
+        <p style={panelStyle}>Nothing downloaded in the last 30 days.</p>
+      </TabPanel>
 
-        <TabPanel value="docs">
-          <p style={panelStyle}>Your signed documents will appear here.</p>
-        </TabPanel>
-      </Tabs>
-    </div>
+      <TabPanel value="docs">
+        <p style={panelStyle}>Your signed documents will appear here.</p>
+      </TabPanel>
+    </Tabs>
   );
 };
 
