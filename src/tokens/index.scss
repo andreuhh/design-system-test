@@ -10,7 +10,20 @@
   --ds-color-surface-high: #f1f1f7;
   --ds-color-surface-positive: #b1ffc7;
   --ds-color-surface-negative: #ffbfb1;
+  --ds-color-surface-hover: #f6f6fa;
+  // Same hex as SurfaceHigh in Figma, kept as a separate semantic token.
+  --ds-color-surface-active: #f1f1f7;
   --ds-color-on-neutral: #1b2134;
+  // Same hex as OnNeutral in Figma, kept as a separate semantic token.
+  --ds-color-inverse: #1b2134;
+  --ds-color-inverse-hover: #343a4e;
+  --ds-color-inverse-active: #585d71;
+  --ds-color-on-inverse: #ffffff;
+  --ds-color-outline: #d3d3dc;
+  --ds-color-outline-hover: #c4c5cf;
+  // Figma inconsistency: pill focus ring is #000000, underline focus ring is Inverse.
+  // Normalized on Inverse: an alias, because the focus ring is meant to follow Inverse.
+  --ds-color-focus-ring: var(--ds-color-inverse);
 
   // Typography
   --ds-font-family: "Inter", system-ui, sans-serif;
