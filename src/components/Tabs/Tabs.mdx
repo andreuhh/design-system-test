@@ -1,0 +1,128 @@
+import { ArgTypes, Canvas, Controls, Meta } from "@storybook/addon-docs/blocks";
+import { Tab } from "./Tab";
+import * as TabsStories from "./Tabs.stories";
+
+<Meta of={TabsStories} />
+
+# Tabs
+
+A set of sections shown one at a time, with a tab for each. Switching a tab changes
+the content underneath.
+
+Use `Tabs` to split content a user reads **one section at a time**, inside a single
+page and without navigation. For steps that must be completed in order use a wizard,
+and for content that should be readable all at once use an accordion or plain headings.
+
+`Tabs`, `TabList`, `Tab` and `TabPanel` are a compound component: they share state
+through context, so no props need to be threaded through by hand.
+
+## Uncontrolled
+
+Pass `defaultValue` and `Tabs` owns the state. This is the common case.
+
+<Canvas of={TabsStories.Pill} />
+
+```tsx
+<Tabs defaultValue="emails" variant="pill">
+  <TabList aria-label="Inbox sections">
+    <Tab value="emails">Emails</Tab>
+    <Tab value="files">Files</Tab>
+  </TabList>
+  <TabPanel value="emails">…</TabPanel>
+  <TabPanel value="files">…</TabPanel>
+</Tabs>
+```
+
+## Controlled
+
+Pass `value` and `onValueChange` to own the state yourself, when the selected
+section has to be read or set from outside.
+
+<Canvas of={TabsStories.SwitchingTabs} />
+
+```tsx
+const [section, setSection] = useState("emails");
+
+<Tabs value={section} onValueChange={setSection} variant="underline">
+  …
+</Tabs>;
+```
+
+Exactly one of `defaultValue` or `value` is required: the types make "no tab
+selected" unreachable.
+
+## Variants
+
+`variant` lives on `Tabs`, not on each `Tab`, and reaches the tabs through context:
+a group cannot end up with mixed styles.
+
+<Canvas of={TabsStories.Underline} />
+
+## Badge
+
+A badge is added through the `Tab` API and is rendered with the `Badge` component.
+
+<Canvas of={TabsStories.WithBadge} />
+
+```tsx
+<Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+  Files
+</Tab>
+```
+
+## Props
+
+<Controls of={TabsStories.Pill} />
+
+These props are declared as a union, which the docs generator cannot read, so they
+are documented here.
+
+### `Tabs`
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `defaultValue` | `string` | uncontrolled mode | Value of the tab selected on mount. Mutually exclusive with `value`. |
+| `value` | `string` | controlled mode | Value of the selected tab. Mutually exclusive with `defaultValue`. |
+| `onValueChange` | `(value: string) => void` | in controlled mode | Called with the value of the tab the user activated. Not called when the already selected tab is clicked. |
+
+### `TabList`
+
+| Prop | Type | Required | Description |
+|---|---|---|---|
+| `aria-label` | `string` | one of the two | Accessible name of the tablist. |
+| `aria-labelledby` | `string` | one of the two | Id of the element naming the tablist. |
+
+### `Tab`
+
+<ArgTypes of={Tab} />
+
+## Accessibility
+
+Built on the [WAI-ARIA Tabs pattern](https://www.w3.org/WAI/ARIA/apg/patterns/tabs/).
+
+**Keyboard**
+
+| Key | Behaviour |
+|---|---|
+| <kbd>←</kbd> <kbd>→</kbd> | Move to the previous or next tab, wrapping around at both ends. |
+| <kbd>Home</kbd> <kbd>End</kbd> | Move to the first or last tab. |
+| <kbd>Tab</kbd> | Move out of the tablist and into the selected panel. |
+
+Activation is **automatic**: moving the focus also selects the tab, so the panel
+follows the focus. The tablist is a single tab stop (roving tabindex): only the
+selected tab is reachable with <kbd>Tab</kbd>.
+
+On mobile the tablist scrolls horizontally, and the focused tab is scrolled into view.
+
+**Roles and relations**
+
+`role="tablist"` (named by `aria-label` or `aria-labelledby`), `role="tab"` with
+`aria-selected` and `aria-controls`, `role="tabpanel"` with `aria-labelledby`.
+Unselected panels stay mounted and are hidden with the `hidden` attribute, so
+`aria-controls` always resolves to an element.
+
+**Badge**
+
+The badge text is part of the accessible name of the tab: a tab labelled `Files`
+with a `Warning` badge is announced as "Files Warning". The badge variant carries
+no information on its own, so nothing is conveyed by colour alone.

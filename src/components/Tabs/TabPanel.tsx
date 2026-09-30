@@ -5,9 +5,14 @@ export type TabPanelProps = Omit<
   ComponentPropsWithoutRef<"div">,
   "className" | "role" | "id" | "hidden" | "aria-labelledby" | "tabIndex"
 > & {
+  /** Must match the `value` of the `Tab` this panel belongs to. */
   value: string;
 };
 
+/**
+ * Content of one tab. Unselected panels stay mounted and are hidden with the
+ * `hidden` attribute, so `aria-controls` always resolves.
+ */
 export function TabPanel({ value, children, ...rest }: TabPanelProps) {
   const { baseId, value: activeValue } = useTabsContext("TabPanel");
   const isSelected = value === activeValue;

@@ -3,7 +3,9 @@ import { Badge, type BadgeVariant } from "../Badge";
 import { panelId, tabId, useTabsContext } from "./TabsContext";
 
 export interface TabBadge {
+  /** Badge text. It becomes part of the accessible name of the tab. */
   label: string;
+  /** Badge colour. Defaults to `"neutral"`. */
   variant?: BadgeVariant;
 }
 
@@ -21,10 +23,18 @@ export type TabProps = Omit<
   // activation would select a disabled tab while the focus stays behind.
   | "disabled"
 > & {
+  /** Identifies the tab and links it to the `TabPanel` with the same value. */
   value: string;
+  /** Renders a `Badge` after the label. */
   badge?: TabBadge;
 };
 
+/**
+ * A single tab. Selecting it shows the `TabPanel` with the same `value`.
+ *
+ * A consumer `onClick` runs before the selection and can cancel it by calling
+ * `event.preventDefault()`.
+ */
 export function Tab({ value, badge, children, onClick, ...rest }: TabProps) {
   const { baseId, variant, value: activeValue, selectTab } = useTabsContext("Tab");
   const isSelected = value === activeValue;

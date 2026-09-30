@@ -13,6 +13,10 @@ export type TabListProps = Omit<
 > &
   TabListLabelProps;
 
+/**
+ * Groups the tabs and owns the keyboard navigation: arrows (with wrap), Home
+ * and End. Requires `aria-label` or `aria-labelledby`.
+ */
 export function TabList({ children, onKeyDown, ...rest }: TabListProps) {
   const { variant, selectTab } = useTabsContext("TabList");
   const handleKeyDown = useRovingFocus(selectTab);

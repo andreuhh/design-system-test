@@ -1,0 +1,194 @@
+import type { Meta, StoryObj } from "@storybook/react-vite";
+import { useState } from "react";
+import { Tab } from "./Tab";
+import { TabList } from "./TabList";
+import { TabPanel } from "./TabPanel";
+import { Tabs } from "./Tabs";
+
+const meta = {
+  title: "Components/Tabs",
+  component: Tabs,
+  subcomponents: { TabList, Tab, TabPanel },
+  // No autodocs tag: Tabs.mdx is the docs page for this component.
+  args: { variant: "pill", defaultValue: "emails" },
+  argTypes: {
+    variant: { control: "inline-radio", options: ["pill", "underline"] },
+  },
+  render: (args) => (
+    <Tabs {...args}>
+      <TabList aria-label="Inbox sections">
+        <Tab value="emails">Emails</Tab>
+        <Tab value="files">Files</Tab>
+        <Tab value="archive">Archive</Tab>
+      </TabList>
+      <TabPanel value="emails">Emails panel</TabPanel>
+      <TabPanel value="files">Files panel</TabPanel>
+      <TabPanel value="archive">Archive panel</TabPanel>
+    </Tabs>
+  ),
+} satisfies Meta<typeof Tabs>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Pill: Story = {};
+
+export const Underline: Story = { args: { variant: "underline" } };
+
+/** A badge is added through the Tab API and shows up in the accessible name. */
+export const WithBadge: Story = {
+  render: (args) => (
+    <Tabs {...args}>
+      <TabList aria-label="Inbox sections">
+        <Tab value="emails">Emails</Tab>
+        <Tab value="drafts" badge={{ label: "3" }}>
+          Drafts
+        </Tab>
+        <Tab value="sent" badge={{ label: "Sent", variant: "positive" }}>
+          Sent
+        </Tab>
+        <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+          Files
+        </Tab>
+      </TabList>
+      <TabPanel value="emails">Emails panel</TabPanel>
+      <TabPanel value="drafts">Drafts panel</TabPanel>
+      <TabPanel value="sent">Sent panel</TabPanel>
+      <TabPanel value="files">Files panel</TabPanel>
+    </Tabs>
+  ),
+};
+
+/** Mobile is a media query, never a prop: resize the viewport to see it change. */
+export const Mobile: Story = {
+  globals: { viewport: { value: "mobile1", isRotated: false } },
+  render: () => (
+    <div style={{ display: "grid", gap: 32 }}>
+      <Tabs defaultValue="emails" variant="pill">
+        <TabList aria-label="Inbox sections, pill">
+          <Tab value="emails">Emails</Tab>
+          <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+            Files
+          </Tab>
+        </TabList>
+        <TabPanel value="emails">Emails panel</TabPanel>
+        <TabPanel value="files">Files panel</TabPanel>
+      </Tabs>
+      <Tabs defaultValue="emails" variant="underline">
+        <TabList aria-label="Inbox sections, underline">
+          <Tab value="emails">Emails</Tab>
+          <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+            Files
+          </Tab>
+        </TabList>
+        <TabPanel value="emails">Emails panel</TabPanel>
+        <TabPanel value="files">Files panel</TabPanel>
+      </Tabs>
+    </div>
+  ),
+};
+
+const overflowSections = [
+  "Emails",
+  "Files",
+  "Archive",
+  "Drafts",
+  "Sent",
+  "Spam",
+  "Trash",
+  "Scheduled",
+];
+
+/**
+ * Too many tabs for the viewport: the tablist scrolls horizontally, with no
+ * visible scrollbar. Move through them with the arrow keys and the focused tab
+ * is scrolled into view.
+ */
+export const Overflow: Story = {
+  globals: { viewport: { value: "mobile1", isRotated: false } },
+  render: (args) => (
+    <Tabs {...args}>
+      <TabList aria-label="Inbox sections">
+        {overflowSections.map((section) => (
+          <Tab key={section} value={section.toLowerCase()}>
+            {section}
+          </Tab>
+        ))}
+      </TabList>
+      {overflowSections.map((section) => (
+        <TabPanel key={section} value={section.toLowerCase()}>
+          {section} panel
+        </TabPanel>
+      ))}
+    </Tabs>
+  ),
+};
+
+const emails = [
+  { from: "Chiara", subject: "Contract renewal" },
+  { from: "Luca", subject: "Claim #4821 updated" },
+  { from: "Sara", subject: "Quote expires tomorrow" },
+];
+
+const files = ["Policy.pdf", "Invoice.pdf", "Claim form.pdf", "Receipt.png"];
+
+/**
+ * Switching a tab changes the content underneath. Controlled mode: the parent
+ * owns the value and can read it, here to show the current section.
+ */
+const Inbox = () => {
+  const [section, setSection] = useState("emails");
+
+  return (
+    <Tabs value={section} onValueChange={setSection} variant="underline">
+      <TabList aria-label="Inbox sections">
+        <Tab value="emails">Emails</Tab>
+        <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+          Files
+        </Tab>
+      </TabList>
+
+      <TabPanel value="emails">
+        <ul style={{ display: "grid", gap: 8, margin: "24px 0 0", padding: 0, listStyle: "none" }}>
+          {emails.map((email) => (
+            <li
+              key={email.subject}
+              style={{ border: "1px solid #d3d3dc", borderRadius: 8, padding: 12 }}
+            >
+              <strong>{email.from}</strong> — {email.subject}
+            </li>
+          ))}
+        </ul>
+      </TabPanel>
+
+      <TabPanel value="files">
+        <div
+          style={{
+            display: "grid",
+            gap: 8,
+            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+            marginTop: 24,
+          }}
+        >
+          {files.map((file) => (
+            <div
+              key={file}
+              style={{
+                border: "1px solid #d3d3dc",
+                borderRadius: 8,
+                display: "grid",
+                padding: 12,
+                placeItems: "center",
+                minHeight: 80,
+              }}
+            >
+              {file}
+            </div>
+          ))}
+        </div>
+      </TabPanel>
+    </Tabs>
+  );
+};
+
+export const SwitchingTabs: Story = { render: () => <Inbox /> };
