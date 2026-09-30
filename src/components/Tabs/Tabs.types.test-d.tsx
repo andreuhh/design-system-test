@@ -1,8 +1,6 @@
 /**
- * Type-level regression tests: they have no runtime assertions and are not run by
- * Vitest (the include pattern is `*.test.{js,ts,tsx}`), but `pnpm tsc` checks them.
- * A `@ts-expect-error` that stops erroring is itself a compile error, so these
- * cases fail loudly if the props unions are ever loosened.
+ * Checked by `pnpm tsc`, not run by Vitest: the `-d` keeps it out of the test glob.
+ * A `@ts-expect-error` that stops erroring is itself a compile error.
  */
 import { Tab, TabList, TabPanel, Tabs } from "./index";
 

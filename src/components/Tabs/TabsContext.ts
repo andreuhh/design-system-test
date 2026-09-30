@@ -3,10 +3,8 @@ import { createContext, useContext } from "react";
 export type TabsVariant = "pill" | "underline";
 
 export interface TabsContextValue {
-  /** Base for the generated ids, so tab and panel can reference each other. */
   baseId: string;
   variant: TabsVariant;
-  /** Value of the currently selected tab. */
   value: string;
   selectTab: (value: string) => void;
 }
@@ -23,10 +21,7 @@ export function useTabsContext(componentName: string): TabsContextValue {
   return context;
 }
 
-/**
- * `aria-controls` and `aria-labelledby` hold space separated id lists, so a
- * value like "my files" would break the link between tab and panel.
- */
+/** `aria-controls` and `aria-labelledby` are space separated id lists. */
 function toIdPart(value: string): string {
   return value.replace(/\s+/g, "-");
 }

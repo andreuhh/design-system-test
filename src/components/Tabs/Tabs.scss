@@ -5,18 +5,10 @@
   align-items: center;
 
   @include mobile {
-    // Tabs overflow horizontally on mobile; the focused tab is scrolled into
-    // view by useRovingFocus. The scrollbar itself is hidden by design.
     overflow-x: auto;
     scrollbar-width: none;
-    // A scroll container clips on every side, and the focus ring is drawn 4px
-    // outside the tab (2px outline + 2px offset): without room for it, the ring
-    // is cut off above, below and on the first tab. Padding makes that room.
-    // Vertically it is cancelled by a negative margin, so the tabs keep their
-    // position. Horizontally it is not: a negative inline margin would push the
-    // list outside its container and could scroll the whole page, which a design
-    // system component must never do. The trade-off is 4px of horizontal offset
-    // from the Figma layout on mobile, in exchange for an unclipped focus ring.
+    // Room for the 4px focus ring, which this scroll container would clip. Not
+    // cancelled inline: that would let the list scroll the whole page.
     padding-block: 4px;
     margin-block: -4px;
     padding-inline: 4px;
@@ -44,25 +36,20 @@
 }
 
 .ds-tab {
-  // Native button reset.
   appearance: none;
   margin: 0;
-  // The variants set padding-inline only: without this the native vertical
-  // padding of a button would survive.
+  // The variants set padding-inline only: the native vertical padding would survive.
   padding: 0;
   border: 0;
   background: none;
   font: inherit;
   cursor: pointer;
 
-  // Fixed height plus padding and border: the box must include them.
   box-sizing: border-box;
   display: inline-flex;
   align-items: center;
   gap: var(--ds-spacing-2xs);
-  // Never compress: on mobile the tablist scrolls instead.
   flex-shrink: 0;
-  // Figma: fixed height, no height token in the design system.
   height: 50px;
   color: var(--ds-color-on-neutral);
   font-family: var(--ds-font-family);
@@ -76,17 +63,15 @@
   }
 
   &:focus-visible {
-    // Figma: 2px stroke outside the tab, 2px away from it.
     outline: 2px solid var(--ds-color-focus-ring);
     outline-offset: 2px;
   }
 }
 
 .ds-tab--pill {
-  // Figma: raw px radius, no radius token in the design system.
   border-radius: 100px;
-  // The border is inner aligned in Figma: a transparent border on every pill
-  // plus a padding reduced by its width keeps all states the same size.
+  // Inner border: transparent on every pill, padding minus its width, so all
+  // states measure the same.
   border: 1px solid transparent;
   padding-inline: calc(var(--ds-spacing-s) - 1px);
 
@@ -94,13 +79,12 @@
     padding-inline: calc(var(--ds-spacing-xs) - 1px);
   }
 
-  // Selected and unselected states are written as mutually exclusive selectors,
-  // so neither can leak into the other and the order in the file does not matter.
+  // Mutually exclusive with the selected rule: order in the file cannot matter.
   &:not([aria-selected="true"]) {
     background-color: transparent;
     border-color: var(--ds-color-outline);
 
-    // Hover is skipped on touch devices, where it would stick after a tap.
+    // Skipped on touch, where hover would stick after a tap.
     @media (hover: hover) {
       &:hover {
         background-color: var(--ds-color-surface-hover);
@@ -134,9 +118,8 @@
 
 .ds-tab--underline {
   position: relative;
-  // Figma: 3px reserved at the bottom for the line.
   padding: 0 0 3px;
-  // Figma: the focus ring radius is 2XS (8px) = this radius + the 2px offset.
+  // Plus the 2px outline offset, this is the 8px ring radius from Figma.
   border-radius: 6px;
 
   &::after {
@@ -145,15 +128,13 @@
     bottom: 0;
     left: 0;
     right: 0;
-    // Figma: 3px line, raw px radius.
     height: 3px;
     border-radius: 100px;
-    // Always rendered, so no layout shift between states.
+    // Always rendered, so states do not shift the layout.
     background-color: transparent;
   }
 
-  // Only the unselected line reacts to hover and active: on the selected tab the
-  // line stays Inverse, and the selectors make that impossible to get wrong.
+  // Mutually exclusive with the selected rule: the selected line never changes.
   &:not([aria-selected="true"]) {
     @media (hover: hover) {
       &:hover::after {
@@ -173,22 +154,17 @@
 
 .ds-tab-panel:focus-visible {
   outline: 2px solid var(--ds-color-focus-ring);
-  // Drawn inside the panel, unlike the ring on a tab: the panel has no margin of
-  // its own, so an outside ring would overlap whatever sits next to it. A panel
-  // placed right under the tablist would cover the underline indicator. Inside,
-  // the ring stays within the panel whatever layout the consumer builds.
+  // Inside, unlike on a tab: an outside ring would overlap the tabs above.
   outline-offset: -2px;
 }
 
-// The selected state must not rely on an author background colour, which forced
-// colours modes override. System colour keywords are honoured instead.
+// Forced colours override author colours: only system keywords survive.
 @media (forced-colors: active) {
   .ds-tab--pill:not([aria-selected="true"]) {
     border-color: CanvasText;
   }
 
-  // Hover and active are listed too: they are more specific than the plain
-  // selected rule, so they would otherwise win and lose the system colour.
+  // Hover and active are listed too: they are more specific and would win.
   .ds-tab--pill[aria-selected="true"],
   .ds-tab--pill[aria-selected="true"]:hover,
   .ds-tab--pill[aria-selected="true"]:active {
@@ -197,8 +173,7 @@
     color: HighlightText;
   }
 
-  // Without this the line would be forced to Canvas and disappear: the only
-  // place where the selected state is conveyed by a background colour alone.
+  // Otherwise the line is forced to Canvas and the selected state disappears.
   .ds-tab--underline[aria-selected="true"]::after {
     background-color: CanvasText;
   }

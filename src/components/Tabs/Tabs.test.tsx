@@ -64,7 +64,6 @@ describe("Tabs", () => {
       const tab = getTab("My files");
       const panel = screen.getByRole("tabpanel");
 
-      // A space inside an id would turn the reference into a list of two ids.
       expect(tab.id).not.toContain(" ");
       expect(panel.id).not.toContain(" ");
       expect(tab).toHaveAttribute("aria-controls", panel.id);
@@ -84,7 +83,6 @@ describe("Tabs", () => {
       render(<Tabs defaultValue="emails">{inboxTabs}</Tabs>);
 
       expect(screen.getByText("Emails panel")).toBeVisible();
-      // Still in the DOM, so aria-controls always resolves to an element.
       expect(screen.getByText("Files panel")).not.toBeVisible();
       expect(screen.getAllByRole("tabpanel", { hidden: true })).toHaveLength(3);
     });
@@ -186,8 +184,7 @@ describe("Tabs", () => {
         </Tabs>,
       );
 
-      // fireEvent instead of user-event: we need a keydown on the tablist while the
-      // focus is elsewhere, and the tablist itself is not focusable.
+      // user-event cannot do this: the tablist is not focusable.
       fireEvent.keyDown(screen.getByRole("tablist"), { key: "ArrowRight" });
 
       expect(onValueChange).not.toHaveBeenCalled();
@@ -326,7 +323,6 @@ describe("Tabs", () => {
 
       await user.click(getTab("Archive"));
 
-      // The parent ignored the change, so the selection must not move.
       expect(onValueChange).toHaveBeenCalledExactlyOnceWith("archive");
       expect(getTab("Emails")).toHaveAttribute("aria-selected", "true");
       expect(getTab("Archive")).toHaveAttribute("aria-selected", "false");
@@ -381,7 +377,6 @@ describe("Tabs", () => {
     ];
 
     it.each(orphans)("throws when <%s> is rendered outside <Tabs>", (name, createOrphan) => {
-      // React logs the render error on top of rethrowing it.
       const consoleError = vi.spyOn(console, "error").mockImplementation(() => undefined);
 
       expect(() => render(createOrphan())).toThrow(`<${name}> must be rendered inside a <Tabs>.`);

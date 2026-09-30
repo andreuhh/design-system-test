@@ -9,8 +9,7 @@ const emails = [
 
 const files = ["Policy.pdf", "Invoice.pdf", "Claim form.pdf", "Receipt.png"];
 
-// Demo content only: plain inline styles, never `ds-` classes, so nothing here
-// can be mistaken for part of the design system.
+// Demo content only: plain inline styles, never `ds-` classes.
 const cardStyle = { border: "1px solid #d3d3dc", borderRadius: 8, padding: 12 };
 const panelStyle = { marginTop: 24 };
 
@@ -77,7 +76,8 @@ export function App() {
     <main>
       <h1>Tabs</h1>
       <p>
-        An accessible, reusable Tabs component with an optional Badge, built as a design system component.
+        An accessible, reusable Tabs component with an optional Badge, built as a design system
+        component.
       </p>
 
       <h2>Switching tabs — pill</h2>

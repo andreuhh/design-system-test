@@ -5,10 +5,7 @@ import { TabList } from "./TabList";
 import { TabPanel } from "./TabPanel";
 import { Tabs } from "./Tabs";
 
-// The demo content in the panels would otherwise inherit the default serif font
-// of the browser. Kept in this meta and not in .storybook/preview on purpose: a
-// global decorator would hide a design system component that forgets to declare
-// its own font, the way Tab and Badge already do.
+// Not global in .storybook/preview: that would hide a component missing its own font.
 const withTokenFont: Decorator = (Story) => (
   <div style={{ fontFamily: "var(--ds-font-family)" }}>
     <Story />
@@ -110,11 +107,7 @@ const overflowSections = [
   "Scheduled",
 ];
 
-/**
- * Too many tabs for the viewport: the tablist scrolls horizontally, with no
- * visible scrollbar. Move through them with the arrow keys and the focused tab
- * is scrolled into view.
- */
+/** Too many tabs for the viewport: the tablist scrolls, and so does the focused tab. */
 export const Overflow: Story = {
   globals: { viewport: { value: "mobile1", isRotated: false } },
   render: (args) => (
@@ -143,8 +136,7 @@ const emails = [
 
 const files = ["Policy.pdf", "Invoice.pdf", "Claim form.pdf", "Receipt.png"];
 
-// Demo content only: plain inline styles, never `ds-` classes, so nothing here
-// can be mistaken for part of the design system.
+// Demo content only: plain inline styles, never `ds-` classes.
 const cardStyle = { border: "1px solid #d3d3dc", borderRadius: 8, padding: 12 };
 const panelStyle = { marginTop: 24 };
 
@@ -208,10 +200,7 @@ const Inbox = () => {
   );
 };
 
-/**
- * Switching a tab changes the content underneath. Controlled mode: the parent
- * owns the value, so it can read it or set it from outside.
- */
+/** Switching a tab changes the content underneath. Controlled by the parent. */
 export const SwitchingTabs: Story = {
   // The story ignores the args, so a "variant" control would be misleading.
   parameters: { controls: { disable: true } },
