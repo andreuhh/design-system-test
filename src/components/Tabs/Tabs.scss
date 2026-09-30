@@ -173,7 +173,11 @@
 
 .ds-tab-panel:focus-visible {
   outline: 2px solid var(--ds-color-focus-ring);
-  outline-offset: 2px;
+  // Drawn inside the panel, unlike the ring on a tab: the panel has no margin of
+  // its own, so an outside ring would overlap whatever sits next to it. A panel
+  // placed right under the tablist would cover the underline indicator. Inside,
+  // the ring stays within the panel whatever layout the consumer builds.
+  outline-offset: -2px;
 }
 
 // The selected state must not rely on an author background colour, which forced
