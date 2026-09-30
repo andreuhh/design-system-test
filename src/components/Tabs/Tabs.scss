@@ -9,6 +9,17 @@
     // view by useRovingFocus. The scrollbar itself is hidden by design.
     overflow-x: auto;
     scrollbar-width: none;
+    // A scroll container clips on every side, and the focus ring is drawn 4px
+    // outside the tab (2px outline + 2px offset): without room for it, the ring
+    // is cut off above, below and on the first tab. Padding makes that room.
+    // Vertically it is cancelled by a negative margin, so the tabs keep their
+    // position. Horizontally it is not: a negative inline margin would push the
+    // list outside its container and could scroll the whole page, which a design
+    // system component must never do. The trade-off is 4px of horizontal offset
+    // from the Figma layout on mobile, in exchange for an unclipped focus ring.
+    padding-block: 4px;
+    margin-block: -4px;
+    padding-inline: 4px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -36,6 +47,9 @@
   // Native button reset.
   appearance: none;
   margin: 0;
+  // The variants set padding-inline only: without this the native vertical
+  // padding of a button would survive.
+  padding: 0;
   border: 0;
   background: none;
   font: inherit;
