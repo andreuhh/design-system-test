@@ -132,63 +132,80 @@ const emails = [
 
 const files = ["Policy.pdf", "Invoice.pdf", "Claim form.pdf", "Receipt.png"];
 
-/**
- * Switching a tab changes the content underneath. Controlled mode: the parent
- * owns the value and can read it, here to show the current section.
- */
+// Demo content only: plain inline styles, never `ds-` classes, so nothing here
+// can be mistaken for part of the design system.
+const cardStyle = { border: "1px solid #d3d3dc", borderRadius: 8, padding: 12 };
+const panelStyle = { marginTop: 24 };
+
 const Inbox = () => {
   const [section, setSection] = useState("emails");
 
   return (
-    <Tabs value={section} onValueChange={setSection} variant="underline">
-      <TabList aria-label="Inbox sections">
-        <Tab value="emails">Emails</Tab>
-        <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
-          Files
-        </Tab>
-      </TabList>
+    // The demo content inherits the font of the page; the tabs bring their own.
+    <div style={{ fontFamily: "var(--ds-font-family)" }}>
+      <Tabs value={section} onValueChange={setSection} variant="pill">
+        <TabList aria-label="Inbox sections">
+          <Tab value="emails">Emails</Tab>
+          <Tab value="files" badge={{ label: "Warning", variant: "negative" }}>
+            Files
+          </Tab>
+          <Tab value="edits">Edits</Tab>
+          <Tab value="downloads">Downloads</Tab>
+          <Tab value="docs">Docs</Tab>
+        </TabList>
 
-      <TabPanel value="emails">
-        <ul style={{ display: "grid", gap: 8, margin: "24px 0 0", padding: 0, listStyle: "none" }}>
-          {emails.map((email) => (
-            <li
-              key={email.subject}
-              style={{ border: "1px solid #d3d3dc", borderRadius: 8, padding: 12 }}
-            >
-              <strong>{email.from}</strong> — {email.subject}
-            </li>
-          ))}
-        </ul>
-      </TabPanel>
+        <TabPanel value="emails">
+          <ul style={{ ...panelStyle, display: "grid", gap: 8, padding: 0, listStyle: "none" }}>
+            {emails.map((email) => (
+              <li key={email.subject} style={cardStyle}>
+                <strong>{email.from}</strong> — {email.subject}
+              </li>
+            ))}
+          </ul>
+        </TabPanel>
 
-      <TabPanel value="files">
-        <div
-          style={{
-            display: "grid",
-            gap: 8,
-            gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
-            marginTop: 24,
-          }}
-        >
-          {files.map((file) => (
-            <div
-              key={file}
-              style={{
-                border: "1px solid #d3d3dc",
-                borderRadius: 8,
-                display: "grid",
-                padding: 12,
-                placeItems: "center",
-                minHeight: 80,
-              }}
-            >
-              {file}
-            </div>
-          ))}
-        </div>
-      </TabPanel>
-    </Tabs>
+        <TabPanel value="files">
+          <div
+            style={{
+              ...panelStyle,
+              display: "grid",
+              gap: 8,
+              gridTemplateColumns: "repeat(auto-fill, minmax(120px, 1fr))",
+            }}
+          >
+            {files.map((file) => (
+              <div
+                key={file}
+                style={{ ...cardStyle, display: "grid", placeItems: "center", minHeight: 80 }}
+              >
+                {file}
+              </div>
+            ))}
+          </div>
+        </TabPanel>
+
+        <TabPanel value="edits">
+          <p style={panelStyle}>No pending edits.</p>
+        </TabPanel>
+
+        <TabPanel value="downloads">
+          <p style={panelStyle}>Nothing downloaded in the last 30 days.</p>
+        </TabPanel>
+
+        <TabPanel value="docs">
+          <p style={panelStyle}>Your signed documents will appear here.</p>
+        </TabPanel>
+      </Tabs>
+    </div>
   );
 };
 
-export const SwitchingTabs: Story = { render: () => <Inbox /> };
+/**
+ * Switching a tab changes the content underneath. Controlled mode: the parent
+ * owns the value, so it can read it or set it from outside.
+ */
+export const SwitchingTabs: Story = {
+  // The story ignores the args, so a "variant" control would be misleading.
+  parameters: { controls: { disable: true } },
+  render: () => <Inbox />,
+};
