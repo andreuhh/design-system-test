@@ -82,6 +82,10 @@ export const StylingHooksAreClosed = () => (
       <Tab value="emails" className="my-tab">
         Emails
       </Tab>
+      {/* @ts-expect-error there is no disabled state in the design */}
+      <Tab value="files" disabled>
+        Files
+      </Tab>
     </TabList>
     {/* @ts-expect-error the hidden attribute is managed internally */}
     <TabPanel value="emails" hidden>

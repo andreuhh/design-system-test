@@ -23,10 +23,18 @@ export function useTabsContext(componentName: string): TabsContextValue {
   return context;
 }
 
+/**
+ * `aria-controls` and `aria-labelledby` hold space separated id lists, so a
+ * value like "my files" would break the link between tab and panel.
+ */
+function toIdPart(value: string): string {
+  return value.replace(/\s+/g, "-");
+}
+
 export function tabId(baseId: string, value: string): string {
-  return `${baseId}-tab-${value}`;
+  return `${baseId}-tab-${toIdPart(value)}`;
 }
 
 export function panelId(baseId: string, value: string): string {
-  return `${baseId}-panel-${value}`;
+  return `${baseId}-panel-${toIdPart(value)}`;
 }

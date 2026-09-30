@@ -9,7 +9,17 @@ export interface TabBadge {
 
 export type TabProps = Omit<
   ComponentPropsWithoutRef<"button">,
-  "className" | "role" | "id" | "type" | "value" | "aria-selected" | "aria-controls" | "tabIndex"
+  | "className"
+  | "role"
+  | "id"
+  | "type"
+  | "value"
+  | "aria-selected"
+  | "aria-controls"
+  | "tabIndex"
+  // Out of scope: there is no disabled state in the design, and automatic
+  // activation would select a disabled tab while the focus stays behind.
+  | "disabled"
 > & {
   value: string;
   badge?: TabBadge;

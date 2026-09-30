@@ -47,6 +47,31 @@ describe("Tabs", () => {
       expect(panel).toHaveAttribute("aria-labelledby", tab.id);
     });
 
+    it("keeps tab and panel linked when the value contains spaces", async () => {
+      const user = userEvent.setup();
+      render(
+        <Tabs defaultValue="emails">
+          <TabList aria-label="Inbox sections">
+            <Tab value="emails">Emails</Tab>
+            <Tab value="my files">My files</Tab>
+          </TabList>
+          <TabPanel value="emails">Emails panel</TabPanel>
+          <TabPanel value="my files">My files panel</TabPanel>
+        </Tabs>,
+      );
+
+      await user.click(getTab("My files"));
+      const tab = getTab("My files");
+      const panel = screen.getByRole("tabpanel");
+
+      // A space inside an id would turn the reference into a list of two ids.
+      expect(tab.id).not.toContain(" ");
+      expect(panel.id).not.toContain(" ");
+      expect(tab).toHaveAttribute("aria-controls", panel.id);
+      expect(panel).toHaveAttribute("aria-labelledby", tab.id);
+      expect(panel).toHaveAccessibleName("My files");
+    });
+
     it("marks only the selected tab as selected", () => {
       render(<Tabs defaultValue="emails">{inboxTabs}</Tabs>);
 
