@@ -22,8 +22,9 @@ implemented from scratch (no headless UI libraries).
 ## Principles
 
 - **Semantic tokens.** Colours, spacing and typography come from `src/tokens` as CSS custom
-  properties, named after Figma (`SurfaceHigh` → `--ds-color-surface-high`). Components never
-  hardcode a colour or a spacing value.
+  properties, named after Figma (`SurfaceHigh` → `--ds-color-surface-high`). The few values Figma
+  has no token for — radii, the fixed tab heights, the underline, the focus ring width and offset
+  — stay as raw px, declared and commented where they appear.
 - **Framework-agnostic CSS.** Plain SCSS with BEM classes under a `ds-` prefix
   (`ds-tab`, `ds-tab--pill`, `ds-tab__label`) — no CSS Modules, no CSS-in-JS, so the same
   stylesheet can back more than one framework.
