@@ -55,7 +55,7 @@ export function Tabs({
 
   return (
     <TabsContext.Provider value={context}>
-      <div className="ds-tabs" {...rest}>
+      <div {...rest} className="ds-tabs">
         {children}
       </div>
     </TabsContext.Provider>

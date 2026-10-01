@@ -14,6 +14,7 @@ export function TabPanel({ value, children, ...rest }: TabPanelProps) {
 
   return (
     <div
+      {...rest}
       role="tabpanel"
       id={panelId(baseId, value)}
       aria-labelledby={tabId(baseId, value)}
@@ -22,7 +23,6 @@ export function TabPanel({ value, children, ...rest }: TabPanelProps) {
       // Never unmounted: aria-controls must always resolve to an element.
       hidden={!isSelected}
       className="ds-tab-panel"
-      {...rest}
     >
       {children}
     </div>

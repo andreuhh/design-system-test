@@ -368,6 +368,32 @@ describe("Tabs", () => {
     });
   });
 
+  describe("consumer props", () => {
+    it("ignores a data-value that would shadow the one keyboard navigation reads", async () => {
+      const user = userEvent.setup();
+      render(
+        <Tabs defaultValue="emails">
+          <TabList aria-label="Inbox sections">
+            <Tab value="emails">Emails</Tab>
+            <Tab value="files" data-value="not-files">
+              Files
+            </Tab>
+            <Tab value="archive">Archive</Tab>
+          </TabList>
+          <TabPanel value="emails">Emails panel</TabPanel>
+          <TabPanel value="files">Files panel</TabPanel>
+          <TabPanel value="archive">Archive panel</TabPanel>
+        </Tabs>,
+      );
+
+      await user.tab();
+      await user.keyboard("{ArrowRight}");
+
+      expect(getTab("Files")).toHaveAttribute("aria-selected", "true");
+      expect(screen.getByText("Files panel")).toBeVisible();
+    });
+  });
+
   describe("usage errors", () => {
     // Factories, not elements: Biome reads an array of JSX as a list to render.
     const orphans: Array<[string, () => ReactElement]> = [

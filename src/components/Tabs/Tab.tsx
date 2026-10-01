@@ -28,6 +28,8 @@ export function Tab({ value, badge, children, onClick, ...rest }: TabProps) {
 
   return (
     <button
+      // Spread first: internal attributes below must win over consumer props.
+      {...rest}
       type="button"
       role="tab"
       id={tabId(baseId, value)}
@@ -44,7 +46,6 @@ export function Tab({ value, badge, children, onClick, ...rest }: TabProps) {
           selectTab(value);
         }
       }}
-      {...rest}
     >
       <span className="ds-tab__label">{children}</span>
       {badge ? (

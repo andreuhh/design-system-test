@@ -18,6 +18,7 @@ export function TabList({ children, onKeyDown, ...rest }: TabListProps) {
 
   return (
     <div
+      {...rest}
       role="tablist"
       className={`ds-tab-list ds-tab-list--${variant}`}
       onKeyDown={(event) => {
@@ -26,7 +27,6 @@ export function TabList({ children, onKeyDown, ...rest }: TabListProps) {
           handleKeyDown(event);
         }
       }}
-      {...rest}
     >
       {children}
     </div>

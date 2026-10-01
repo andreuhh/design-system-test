@@ -9,7 +9,7 @@ export interface BadgeProps extends Omit<ComponentPropsWithoutRef<"span">, "clas
 
 export function Badge({ variant = "neutral", children, ...rest }: BadgeProps) {
   return (
-    <span className={`ds-badge ds-badge--${variant}`} {...rest}>
+    <span {...rest} className={`ds-badge ds-badge--${variant}`}>
       {children}
     </span>
   );
