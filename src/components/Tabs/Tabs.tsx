@@ -1,4 +1,4 @@
-import { type ComponentPropsWithoutRef, useCallback, useId, useMemo, useState } from "react";
+import { type ComponentPropsWithRef, useCallback, useId, useMemo, useState } from "react";
 import { TabsContext, type TabsVariant } from "./TabsContext";
 import "./Tabs.scss";
 
@@ -14,7 +14,7 @@ type UncontrolledProps = {
   value?: never;
 };
 
-export type TabsProps = Omit<ComponentPropsWithoutRef<"div">, "className" | "defaultValue"> & {
+export type TabsProps = Omit<ComponentPropsWithRef<"div">, "className" | "defaultValue"> & {
   variant?: TabsVariant;
 } & (ControlledProps | UncontrolledProps);
 

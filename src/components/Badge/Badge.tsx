@@ -1,9 +1,9 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithRef } from "react";
 import "./Badge.scss";
 
 export type BadgeVariant = "neutral" | "positive" | "negative";
 
-export interface BadgeProps extends Omit<ComponentPropsWithoutRef<"span">, "className"> {
+export interface BadgeProps extends Omit<ComponentPropsWithRef<"span">, "className"> {
   variant?: BadgeVariant;
 }
 

@@ -1,8 +1,8 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithRef } from "react";
 import { panelId, tabId, useTabsContext } from "./TabsContext";
 
 export type TabPanelProps = Omit<
-  ComponentPropsWithoutRef<"div">,
+  ComponentPropsWithRef<"div">,
   "className" | "role" | "id" | "hidden" | "aria-labelledby" | "tabIndex"
 > & {
   value: string;

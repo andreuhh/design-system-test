@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { type ReactElement, useState } from "react";
+import { createRef, type ReactElement, useState } from "react";
 import { axe } from "vitest-axe";
 import { Tab, TabList, TabPanel, Tabs, type TabsVariant } from "./index";
 
@@ -391,6 +391,25 @@ describe("Tabs", () => {
 
       expect(getTab("Files")).toHaveAttribute("aria-selected", "true");
       expect(screen.getByText("Files panel")).toBeVisible();
+    });
+  });
+
+  describe("refs", () => {
+    it("forwards a ref to the underlying button", () => {
+      // React 19: ref is a normal prop, so it travels in rest without forwardRef.
+      const ref = createRef<HTMLButtonElement>();
+      render(
+        <Tabs defaultValue="emails">
+          <TabList aria-label="Inbox sections">
+            <Tab value="emails" ref={ref}>
+              Emails
+            </Tab>
+          </TabList>
+          <TabPanel value="emails">Emails panel</TabPanel>
+        </Tabs>,
+      );
+
+      expect(ref.current).toBe(getTab("Emails"));
     });
   });
 

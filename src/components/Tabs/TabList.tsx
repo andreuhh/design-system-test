@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithRef } from "react";
 import { useTabsContext } from "./TabsContext";
 import { useRovingFocus } from "./useRovingFocus";
 
@@ -7,7 +7,7 @@ type TabListLabelProps =
   | { "aria-labelledby": string; "aria-label"?: never };
 
 export type TabListProps = Omit<
-  ComponentPropsWithoutRef<"div">,
+  ComponentPropsWithRef<"div">,
   "className" | "role" | "aria-label" | "aria-labelledby"
 > &
   TabListLabelProps;

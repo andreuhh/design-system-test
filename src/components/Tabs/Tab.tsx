@@ -1,4 +1,4 @@
-import type { ComponentPropsWithoutRef } from "react";
+import type { ComponentPropsWithRef } from "react";
 import { Badge, type BadgeVariant } from "../Badge";
 import { panelId, tabId, useTabsContext } from "./TabsContext";
 
@@ -8,7 +8,7 @@ export interface TabBadge {
 }
 
 export type TabProps = Omit<
-  ComponentPropsWithoutRef<"button">,
+  ComponentPropsWithRef<"button">,
   | "className"
   | "role"
   | "id"
