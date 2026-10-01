@@ -55,6 +55,14 @@ import { Tab, TabList, TabPanel, Tabs } from "./components";
 Controlled mode replaces `defaultValue` with `value` + `onValueChange`. `variant` is
 `"pill" | "underline"`; the badge variant is `"neutral" | "positive" | "negative"`.
 
+The tokens have to be imported **once** in the entry point of the app, otherwise the custom
+properties the components rely on do not exist and they render unstyled (`src/index.tsx` and
+`.storybook/preview.ts` both do it):
+
+```tsx
+import "./tokens/index.scss";
+```
+
 ## Where to look first
 
 | File | What it holds |
