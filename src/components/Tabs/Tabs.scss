@@ -4,6 +4,10 @@
   display: flex;
   align-items: center;
 
+  @include tablet {
+    background-color: var(--ds-color-surface-negative);
+  }
+
   @include mobile {
     overflow-x: auto;
     scrollbar-width: none;
