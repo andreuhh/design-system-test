@@ -3,7 +3,7 @@ import "./Badge.scss";
 
 export type BadgeVariant = "neutral" | "positive" | "negative";
 
-export interface BadgeProps extends Omit<ComponentPropsWithRef<"span">, "className"> {
+export interface BadgeProps extends Omit<ComponentPropsWithRef<"span">, "className" | "style"> {
   variant?: BadgeVariant;
 }
 

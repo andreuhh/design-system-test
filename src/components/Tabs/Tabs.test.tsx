@@ -2,7 +2,17 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createRef, type ReactElement, useState } from "react";
 import { axe } from "vitest-axe";
-import { Tab, TabList, TabPanel, Tabs, type TabsVariant } from "./index";
+import {
+  Tab,
+  TabList,
+  type TabListProps,
+  TabPanel,
+  type TabPanelProps,
+  type TabProps,
+  Tabs,
+  type TabsProps,
+  type TabsVariant,
+} from "./index";
 
 /** Three tabs, so wrapping in both directions is observable. */
 const inboxTabs = (
@@ -391,6 +401,18 @@ describe("Tabs", () => {
 
       expect(getTab("Files")).toHaveAttribute("aria-selected", "true");
       expect(screen.getByText("Files panel")).toBeVisible();
+    });
+
+    it("does not accept className or style: styling is owned by the design system", () => {
+      // Type-level assertions: Vitest strips types, so these are enforced by `pnpm tsc`.
+      expectTypeOf<TabsProps>().not.toHaveProperty("className");
+      expectTypeOf<TabsProps>().not.toHaveProperty("style");
+      expectTypeOf<TabListProps>().not.toHaveProperty("className");
+      expectTypeOf<TabListProps>().not.toHaveProperty("style");
+      expectTypeOf<TabProps>().not.toHaveProperty("className");
+      expectTypeOf<TabProps>().not.toHaveProperty("style");
+      expectTypeOf<TabPanelProps>().not.toHaveProperty("className");
+      expectTypeOf<TabPanelProps>().not.toHaveProperty("style");
     });
   });
 

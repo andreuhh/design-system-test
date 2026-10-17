@@ -10,6 +10,7 @@ export interface TabBadge {
 export type TabProps = Omit<
   ComponentPropsWithRef<"button">,
   | "className"
+  | "style"
   | "role"
   | "id"
   | "type"

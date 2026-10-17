@@ -14,7 +14,10 @@ type UncontrolledProps = {
   value?: never;
 };
 
-export type TabsProps = Omit<ComponentPropsWithRef<"div">, "className" | "defaultValue"> & {
+export type TabsProps = Omit<
+  ComponentPropsWithRef<"div">,
+  "className" | "style" | "defaultValue"
+> & {
   variant?: TabsVariant;
 } & (ControlledProps | UncontrolledProps);
 

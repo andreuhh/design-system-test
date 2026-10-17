@@ -8,7 +8,7 @@ type TabListLabelProps =
 
 export type TabListProps = Omit<
   ComponentPropsWithRef<"div">,
-  "className" | "role" | "aria-label" | "aria-labelledby"
+  "className" | "style" | "role" | "aria-label" | "aria-labelledby"
 > &
   TabListLabelProps;
 

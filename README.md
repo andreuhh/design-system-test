@@ -96,7 +96,10 @@ import "./tokens/index.scss";
 - **Consumer handlers are composed, not overridden**: `onClick` on `Tab` and `onKeyDown` on
   `TabList` run first, and calling `event.preventDefault()` there cancels the selection or the
   keyboard navigation.
-- **`className` is closed** on every component: styling stays owned by the design system.
+- **`className` and `style` are closed** on every component: styling stays owned by the design
+  system. Closing only `className` would leave inline styles as a bypass. Layout (margins,
+  positioning) belongs to the parent container. The restriction is type-level, verified by
+  `pnpm tsc` through `expectTypeOf` assertions in the tests.
 - `TabList` **requires** `aria-label` or `aria-labelledby`, again through a props union:
   accessibility enforced by the type system.
 

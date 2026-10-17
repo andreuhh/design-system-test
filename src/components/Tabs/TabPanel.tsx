@@ -3,7 +3,7 @@ import { panelId, tabId, useTabsContext } from "./TabsContext";
 
 export type TabPanelProps = Omit<
   ComponentPropsWithRef<"div">,
-  "className" | "role" | "id" | "hidden" | "aria-labelledby" | "tabIndex"
+  "className" | "style" | "role" | "id" | "hidden" | "aria-labelledby" | "tabIndex"
 > & {
   value: string;
 };

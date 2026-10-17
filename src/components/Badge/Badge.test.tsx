@@ -1,6 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { axe } from "vitest-axe";
-import { Badge, type BadgeVariant } from "./Badge";
+import { Badge, type BadgeProps, type BadgeVariant } from "./Badge";
 
 const variants: BadgeVariant[] = ["neutral", "positive", "negative"];
 
@@ -27,6 +27,12 @@ describe("Badge", () => {
       </Badge>,
     );
     expect(screen.getByTestId("badge")).toHaveAttribute("title", "3 warnings");
+  });
+
+  it("does not accept className or style: styling is owned by the design system", () => {
+    // Type-level assertions: Vitest strips types, so these are enforced by `pnpm tsc`.
+    expectTypeOf<BadgeProps>().not.toHaveProperty("className");
+    expectTypeOf<BadgeProps>().not.toHaveProperty("style");
   });
 
   it.each(variants)("has no accessibility violations (%s)", async (variant) => {
