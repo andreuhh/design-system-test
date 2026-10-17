@@ -192,6 +192,34 @@ Two assumptions could not be verified in Figma:
 - **Screen reader**: verified with VoiceOver on macOS (Chrome, Italian locale). Each tab is announced with its
   name, role, selected state and position (e.g. "Files Warning, selected, tab, 2 of 5"), the
   badge text is part of the tab name, and the panel is announced with the name of its tab.
+- **Styles (SCSS)**: there is no automated check. Tests do not read the CSS and Biome does not lint
+  SCSS; `pnpm dev` and `pnpm storybook` only fail on a compile error. See below.
+
+### Checking SCSS changes
+
+Compile one file and print the CSS (one argument only: a second one is the output file and gets
+overwritten):
+
+```bash
+pnpm exec sass --no-source-map src/components/Badge/Badge.scss
+```
+
+Show only errors and warnings:
+
+```bash
+pnpm exec sass --no-source-map src/components/Badge/Badge.scss > /dev/null
+```
+
+After a refactor (e.g. moving declarations into a mixin), compare the CSS with the last commit.
+No output from `diff` means the CSS is identical:
+
+```bash
+pnpm exec sass --no-source-map src/components/Badge/Badge.scss > /tmp/after.css
+git stash
+pnpm exec sass --no-source-map src/components/Badge/Badge.scss > /tmp/before.css
+git stash pop
+diff /tmp/before.css /tmp/after.css
+```
 
 ## Out of scope and next steps
 

@@ -1,0 +1,12 @@
+// Figma text styles. Weight is not part of them: components set it.
+@mixin body-m {
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-font-size-body-m);
+  line-height: var(--ds-line-height-body);
+}
+
+@mixin body-s {
+  font-family: var(--ds-font-family);
+  font-size: var(--ds-font-size-body-s);
+  line-height: var(--ds-line-height-body);
+}
